@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.0.0"
+  required_version = ">= 1.3.0"
 
   required_providers {
     test = {
@@ -13,36 +13,30 @@ terraform {
   }
 }
 
+resource "aci_rest_managed" "fvTenant" {
+  dn         = "uni/tn-TF"
+  class_name = "fvTenant"
+}
+
 module "main" {
   source = "../.."
 
-  name = "ABC"
+  tenant = aci_rest_managed.fvTenant.content.name
+  name   = "RBP1"
 }
 
-data "aci_rest_managed" "fvTenant" {
-  dn = "uni/tn-ABC"
+data "aci_rest_managed" "vnsBackupPol" {
+  dn = module.main.dn
 
   depends_on = [module.main]
 }
 
-resource "test_assertions" "fvTenant" {
-  component = "fvTenant"
+resource "test_assertions" "vnsBackupPol" {
+  component = "vnsBackupPol"
 
   equal "name" {
     description = "name"
-    got         = data.aci_rest_managed.fvTenant.content.name
-    want        = "ABC"
-  }
-
-  equal "nameAlias" {
-    description = "nameAlias"
-    got         = data.aci_rest_managed.fvTenant.content.nameAlias
-    want        = ""
-  }
-
-  equal "descr" {
-    description = "descr"
-    got         = data.aci_rest_managed.fvTenant.content.descr
-    want        = ""
+    got         = data.aci_rest_managed.vnsBackupPol.content.name
+    want        = module.main.name
   }
 }
