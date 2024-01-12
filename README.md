@@ -1,6 +1,8 @@
 <!-- BEGIN_TF_DOCS -->
 [![Tests](https://github.com/netascode/terraform-aci-redirect-backup-policy/actions/workflows/test.yml/badge.svg)](https://github.com/netascode/terraform-aci-redirect-backup-policy/actions/workflows/test.yml)
 
+*This module is no longer maintained as it has been integrated into the [nac-aci](https://github.com/netascode/terraform-aci-nac-aci) module.*
+
 # Terraform ACI Redirect Backup Policy Module
 
 Manages ACI Redirect Backup Policy
